@@ -1,0 +1,45 @@
+title: AI Coding Agent CLI Launched With Permission or Sandbox Bypass
+id: 9eb7d82c-a991-4ac4-9d76-9d6a7d9fa2b3
+status: experimental
+description: |
+    Detects Claude Code or the OpenAI Codex CLI started with an option that turns off approval
+    prompts or the sandbox, so the agent can run any command without a human confirming it.
+    The s1ngularity supply-chain attack (malicious Nx packages, August 2025) launched AI coding
+    agents with such flags from an install script to search the host for secrets.
+    Validated against recordings of Claude Code 2.1.318 and Codex CLI 0.166.0.
+references:
+    - https://github.com/nrwl/nx/security/advisories/GHSA-cxm3-wv7p-598c
+    - https://www.wiz.io/blog/s1ngularity-supply-chain-attack
+    - https://code.claude.com/docs/en/cli-reference
+    - https://developers.openai.com/codex/cli/reference
+    - https://github.com/yug3009p/agent-attack-samples
+author: Yug Patel
+date: 2026-11-04
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+    - attack.execution
+    - attack.t1059
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_agent:
+        CommandLine|contains:
+            - 'claude'
+            - 'codex'
+    selection_flag:
+        CommandLine|contains:
+            - '--dangerously-skip-permissions'
+            - 'bypassPermissions'
+            - '--dangerously-bypass-approvals-and-sandbox'
+            - 'danger-full-access'
+    selection_codex_never:
+        CommandLine|contains|all:
+            - 'codex'
+            - 'approval_policy'
+            - 'never'
+    condition: (selection_agent and selection_flag) or selection_codex_never
+falsepositives:
+    - Developers running an agent unattended inside a container or disposable VM, which is what these flags are meant for. Baseline by user and host.
+level: medium

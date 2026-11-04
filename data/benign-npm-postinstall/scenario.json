@@ -1,0 +1,12 @@
+﻿{
+    "name":  "benign-npm-postinstall",
+    "kind":  "benign",
+    "description":  "An npm package with an ordinary postinstall script.",
+    "expected_rules":  [
+
+                       ],
+    "start_utc":  "2026-11-04T19:18:53.0879281Z",
+    "end_utc":  "2026-11-04T19:19:06.9058338Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

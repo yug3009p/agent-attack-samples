@@ -1,0 +1,40 @@
+<!--
+  Minimal Sysmon configuration for recording AI coding agent telemetry in the lab VM.
+  Written for this project (not derived from another config). It logs:
+    - every process creation (event 1)
+    - file creation of agent configuration and instruction files (event 11)
+    - network connections and DNS queries from Node.js and agent binaries (events 3, 22)
+  Event 11 fires when a file is CREATED, not when an existing file is modified.
+-->
+<Sysmon schemaversion="4.50">
+  <HashAlgorithms>sha256</HashAlgorithms>
+  <EventFiltering>
+    <RuleGroup name="all process creation" groupRelation="or">
+      <ProcessCreate onmatch="exclude" />
+    </RuleGroup>
+    <RuleGroup name="agent config and instruction files" groupRelation="or">
+      <FileCreate onmatch="include">
+        <TargetFilename condition="contains">\.claude\</TargetFilename>
+        <TargetFilename condition="contains">\.codex\</TargetFilename>
+        <TargetFilename condition="end with">\.claude.json</TargetFilename>
+        <TargetFilename condition="end with">\.mcp.json</TargetFilename>
+        <TargetFilename condition="end with">\AGENTS.md</TargetFilename>
+        <TargetFilename condition="end with">\CLAUDE.md</TargetFilename>
+      </FileCreate>
+    </RuleGroup>
+    <RuleGroup name="agent network" groupRelation="or">
+      <NetworkConnect onmatch="include">
+        <Image condition="end with">\node.exe</Image>
+        <Image condition="end with">\claude.exe</Image>
+        <Image condition="end with">\codex.exe</Image>
+      </NetworkConnect>
+    </RuleGroup>
+    <RuleGroup name="agent dns" groupRelation="or">
+      <DnsQuery onmatch="include">
+        <Image condition="end with">\node.exe</Image>
+        <Image condition="end with">\claude.exe</Image>
+        <Image condition="end with">\codex.exe</Image>
+      </DnsQuery>
+    </RuleGroup>
+  </EventFiltering>
+</Sysmon>

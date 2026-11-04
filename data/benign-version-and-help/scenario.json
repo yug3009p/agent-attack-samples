@@ -1,0 +1,12 @@
+﻿{
+    "name":  "benign-version-and-help",
+    "kind":  "benign",
+    "description":  "A user checks the agents\u0027 version and help.",
+    "expected_rules":  [
+
+                       ],
+    "start_utc":  "2026-11-04T19:18:27.6514657Z",
+    "end_utc":  "2026-11-04T19:18:37.1135236Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

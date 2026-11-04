@@ -1,0 +1,12 @@
+﻿{
+    "name":  "agent-bypass-flags-from-script",
+    "kind":  "attack-technique",
+    "description":  "A script runs the agents headless with each permission or sandbox bypass flag.",
+    "expected_rules":  [
+                           "AAS-001"
+                       ],
+    "start_utc":  "2026-11-04T19:16:14.8494872Z",
+    "end_utc":  "2026-11-04T19:16:52.8246915Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}
