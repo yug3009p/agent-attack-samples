@@ -1,0 +1,7 @@
+lab/.secrets/
+lab-runs/
+__pycache__/
+.venv/
+.pytest_cache/
+*.pyc
+node_modules/
