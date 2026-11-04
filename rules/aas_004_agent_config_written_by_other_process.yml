@@ -1,0 +1,37 @@
+title: AI Coding Agent Settings File Created by Another Process
+id: 721dc312-582d-4b2f-96e3-e0e35027da6e
+status: experimental
+description: |
+    Detects a process other than the agent itself creating the user's Claude Code settings
+    or Codex configuration. These files can switch off approval prompts and the sandbox for
+    every future session (for example defaultMode "bypassPermissions", or approval_policy
+    "never" with sandbox_mode "danger-full-access"), so a script or installer writing them is
+    worth a look. Sysmon event 11 fires on file creation only; edits to an existing file are
+    not seen.
+references:
+    - https://code.claude.com/docs/en/settings
+    - https://developers.openai.com/codex/config-reference
+    - https://github.com/yug3009p/agent-attack-samples
+author: Yug Patel
+date: 2026-11-04
+tags:
+    - attack.defense-impairment
+    - attack.t1685
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\.claude\settings.json'
+            - '\.claude\settings.local.json'
+            - '\.codex\config.toml'
+    filter_agent:
+        Image|endswith:
+            - '\claude.exe'
+            - '\codex.exe'
+    condition: selection and not filter_agent
+falsepositives:
+    - A user creating the file in a text editor or IDE.
+    - Configuration management or dotfile tools.
+level: medium

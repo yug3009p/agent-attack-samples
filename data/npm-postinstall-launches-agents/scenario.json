@@ -1,0 +1,13 @@
+﻿{
+    "name":  "npm-postinstall-launches-agents",
+    "kind":  "attack-technique",
+    "description":  "An npm package\u0027s postinstall script launches Claude Code and Codex with permission-bypass flags (s1ngularity technique).",
+    "expected_rules":  [
+                           "AAS-001",
+                           "AAS-002"
+                       ],
+    "start_utc":  "2026-11-04T19:15:36.1053622Z",
+    "end_utc":  "2026-11-04T19:16:13.6862269Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

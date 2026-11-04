@@ -1,0 +1,36 @@
+title: AI Agent Instruction or MCP Config File Created by Node.js
+id: 16553d8c-55f0-4309-bf9e-1e2b0e3e5b03
+status: experimental
+description: |
+    Detects node.exe creating AGENTS.md, CLAUDE.md or .mcp.json. Coding agents read these
+    files automatically: instruction files steer what the agent does, and .mcp.json defines
+    programs the agent will start as tool servers. A malicious npm package can plant them
+    from its install script. The current Claude Code and Codex CLIs write files from their
+    native binaries (claude.exe, codex.exe), so node.exe creating these files points to some
+    other Node.js program.
+references:
+    - https://agents.md/
+    - https://code.claude.com/docs/en/mcp
+    - https://github.com/yug3009p/agent-attack-samples
+author: Yug Patel
+date: 2026-11-04
+tags:
+    - attack.initial-access
+    - attack.t1195.002
+    - attack.persistence
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_file:
+        TargetFilename|endswith:
+            - '\AGENTS.md'
+            - '\CLAUDE.md'
+            - '\.mcp.json'
+    selection_node:
+        Image|endswith: '\node.exe'
+    condition: all of selection_*
+falsepositives:
+    - Project scaffolding tools written in Node.js (for example "create-*" starters) that generate these files.
+    - Older agent versions that ran on Node.js.
+level: low

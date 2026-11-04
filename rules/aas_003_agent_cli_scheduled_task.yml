@@ -1,0 +1,36 @@
+title: Scheduled Task Created to Run an AI Coding Agent
+id: f168697b-9940-4b19-bfe2-7dfd4a801c69
+status: experimental
+description: |
+    Detects schtasks.exe creating a task whose action runs Claude Code or the OpenAI Codex
+    CLI. A task that runs an agent headless gives an attacker a persistent, unattended way to
+    have the agent act on the machine. In the lab recording, Sysmon logged the task's own
+    process without a parent, so this rule looks at the task creation instead; the Security
+    event 4698 (task registered) carries the same command line.
+references:
+    - https://attack.mitre.org/techniques/T1053/005/
+    - https://code.claude.com/docs/en/cli-reference
+    - https://github.com/yug3009p/agent-attack-samples
+author: Yug Patel
+date: 2026-11-04
+tags:
+    - attack.persistence
+    - attack.execution
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_schtasks:
+        - Image|endswith: '\schtasks.exe'
+        - CommandLine|contains: 'schtasks'
+    selection_create:
+        CommandLine|contains: '/create'
+    selection_agent:
+        CommandLine|contains:
+            - 'claude'
+            - 'codex'
+    condition: all of selection_*
+falsepositives:
+    - Teams that deliberately schedule agent jobs (for example nightly code maintenance). Review the task's flags and owner.
+level: medium

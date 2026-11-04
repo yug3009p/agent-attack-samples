@@ -1,0 +1,12 @@
+﻿{
+    "name":  "npm-postinstall-plants-agent-files",
+    "kind":  "attack-technique",
+    "description":  "An npm package\u0027s postinstall script writes AGENTS.md and a .mcp.json server definition into the project.",
+    "expected_rules":  [
+                           "AAS-005"
+                       ],
+    "start_utc":  "2026-11-04T19:17:06.9995430Z",
+    "end_utc":  "2026-11-04T19:17:19.6530377Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

@@ -1,0 +1,12 @@
+﻿{
+    "name":  "agent-config-weakened-by-script",
+    "kind":  "attack-technique",
+    "description":  "A script (not the agent) writes agent settings that turn off approval prompts and the sandbox.",
+    "expected_rules":  [
+                           "AAS-004"
+                       ],
+    "start_utc":  "2026-11-04T19:16:53.7323288Z",
+    "end_utc":  "2026-11-04T19:17:00.9258808Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

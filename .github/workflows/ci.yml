@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check .
+      - run: pytest -q
+
+  chainsaw:
+    # Independent check: run the rules over the recordings with Chainsaw.
+    runs-on: ubuntu-latest
+    env:
+      CHAINSAW_VERSION: v2.17.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml
+      - name: Install Chainsaw
+        run: |
+          curl -sSfL -o chainsaw.tar.gz "https://github.com/WithSecureLabs/chainsaw/releases/download/${CHAINSAW_VERSION}/chainsaw_x86_64-unknown-linux-gnu.tar.gz"
+          mkdir chainsaw-bin && tar -xzf chainsaw.tar.gz -C chainsaw-bin
+          curl -sSfL -o mapping.yml "https://raw.githubusercontent.com/WithSecureLabs/chainsaw/${CHAINSAW_VERSION}/mappings/sigma-event-logs-all.yml"
+          find chainsaw-bin -type f -name chainsaw -exec chmod +x {} \; -exec ln -s "$PWD/{}" chainsaw \;
+          ./chainsaw --version
+      - run: python tools/chainsaw_check.py ./chainsaw mapping.yml

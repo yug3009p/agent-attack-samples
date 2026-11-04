@@ -1,0 +1,12 @@
+﻿{
+    "name":  "benign-headless-default-permissions",
+    "kind":  "benign",
+    "description":  "The agents are run headless with their default permission and sandbox settings.",
+    "expected_rules":  [
+
+                       ],
+    "start_utc":  "2026-11-04T19:18:37.3220547Z",
+    "end_utc":  "2026-11-04T19:18:48.7227846Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}

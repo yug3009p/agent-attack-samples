@@ -1,0 +1,13 @@
+﻿{
+    "name":  "agent-launched-by-scheduled-task",
+    "kind":  "attack-technique",
+    "description":  "A scheduled task runs Claude Code headless with permission checks disabled.",
+    "expected_rules":  [
+                           "AAS-001",
+                           "AAS-003"
+                       ],
+    "start_utc":  "2026-11-04T19:17:19.8302772Z",
+    "end_utc":  "2026-11-04T19:18:27.3623072Z",
+    "prompt":  "Reply with the single word OK.",
+    "agents_logged_in":  false
+}
